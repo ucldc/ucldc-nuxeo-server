@@ -16,7 +16,7 @@ Populate `exportenv.local` with relevant values, then:
 
 Run the following, substituting `<version>` with the version number (this is the docker tag):
 
-`$ docker build -t ucldc/nuxeo:<version> --build-arg NUXEO_VERSION --build-arg CUSTOM_PACKAGE --build-arg CLID .`
+`$ docker build -t ucldc/nuxeo:<version> --build-arg NUXEO_VERSION --build-arg NUXEO_CUSTOM_PACKAGE --build-arg CLID .`
 
 
 ## Run the custom image in a container

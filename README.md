@@ -6,7 +6,7 @@ This repo contains the Dockerfile for [building the custom UCLDC nuxeo server im
 
 ### Set env vars needed for docker build
 
-`$ cp local.exportenv exportenv.local`
+`$ cp exportenv.template exportenv.local`
 
 Populate `exportenv.local` with relevant values, then:
 

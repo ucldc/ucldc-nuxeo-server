@@ -14,6 +14,10 @@ Populate `exportenv.local` with relevant values, then:
 
 ### Build the image
 
+You will first need to login to Nuxeo's private docker registry (providing token name and code when prompted). (To be given access to the private docker registry, you have to file a ticket with Nuxeo). Login command:
+
+`$ docker login docker-private.packages.nuxeo.com`
+
 Run the following, substituting `<version>` with the version number (this is the docker tag):
 
 `$ docker build -t ucldc/nuxeo:<version> --build-arg NUXEO_VERSION --build-arg NUXEO_CUSTOM_PACKAGE --build-arg CLID .`

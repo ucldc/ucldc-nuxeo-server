@@ -12,6 +12,12 @@ Populate `exportenv.local` with relevant values, then:
 
 `$ source ./exportenv.local`
 
+### Set nuxeo configuration values
+
+`$ cp ucldc.conf.template ucldc.conf`
+
+Populate `ucldc.conf` with the relevant values.
+
 ### Build the image
 
 Run the following, substituting `<version>` with the version number (this is the docker tag):

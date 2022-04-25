@@ -1,0 +1,49 @@
+##=============================================================================
+## UCLDC specific configuration file
+##=============================================================================
+
+#nuxeo.url=https://nuxeo.cdlib.org/nuxeo
+
+##-----------------------------------------------------------------------------
+## database
+##-----------------------------------------------------------------------------
+nuxeo.db.name=nuxeo
+nuxeo.db.user=nuxeo
+nuxeo.db.password=*******
+nuxeo.db.host=*******
+nuxeo.db.port=5432
+
+##-----------------------------------------------------------------------------
+## redis
+##-----------------------------------------------------------------------------
+nuxeo.redis.enabled=true
+nuxeo.redis.host=*******
+nuxeo.redis.prefix=nuxeo2021:
+
+##-----------------------------------------------------------------------------
+## elasticsearch
+##-----------------------------------------------------------------------------
+elasticsearch.addressList=*******
+
+##-----------------------------------------------------------------------------
+## S3 data storage
+##-----------------------------------------------------------------------------
+nuxeo.s3storage.bucket=*******
+nuxeo.s3storage.region=*******
+nuxeo.s3storage.cachesize=850GB
+
+nuxeo.s3storage.directdownload=true
+nuxeo.s3storage.directdownload.expire=3600
+nuxeo.s3storage.pathstyleaccess=true
+
+##-----------------------------------------------------------------------------
+## Mail settings (for notifications)
+##-----------------------------------------------------------------------------
+
+##-----------------------------------------------------------------------------
+## data, log and temp directories inside the docker container
+## see https://doc.nuxeo.com/nxdoc/setup-best-practices/#mounting-data-log-and-temporary-directories-as-volumes
+##-----------------------------------------------------------------------------
+nuxeo.log.dir=/var/log/nuxeo
+nuxeo.tmp.dir=/tmp
+nuxeo.data.dir=/var/lib/nuxeo

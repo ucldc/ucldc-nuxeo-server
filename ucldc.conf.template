@@ -47,3 +47,10 @@ nuxeo.s3storage.pathstyleaccess=true
 nuxeo.log.dir=/var/log/nuxeo
 nuxeo.tmp.dir=/tmp
 nuxeo.data.dir=/var/lib/nuxeo
+
+##-----------------------------------------------------------------------------
+## Clustering
+## https://doc.nuxeo.com/nxdoc/nuxeo-server-architecture/#configuration
+##-----------------------------------------------------------------------------
+#nuxeo.cluster.enabled=true
+#nuxeo.cluster.nodeid=...

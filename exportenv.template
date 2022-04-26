@@ -1,3 +1,4 @@
 # https://doc.nuxeo.com/nxdoc/nuxeo-server-release-notes/
 export NUXEO_VERSION=<NUXEO_VERSION>
 export CLID=<CLID>--<UUID>
+export NUXEO_CUSTOM_PACKAGE=<NUXEO_CUSTOM_PACKAGE>

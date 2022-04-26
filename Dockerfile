@@ -22,6 +22,8 @@ RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
 # register
 COPY ./instance.clid /var/lib/nuxeo/instance.clid
 
+COPY ./ucldc.conf /etc/nuxeo/conf.d/ucldc.conf
+
 # become root
 USER 0
 # install RPM Fusion free repository

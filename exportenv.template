@@ -1,2 +1,3 @@
+# https://doc.nuxeo.com/nxdoc/nuxeo-server-release-notes/
 export NUXEO_VERSION=<NUXEO_VERSION>
-export CLID=<CLID>
+export CLID=<CLID>--<UUID>

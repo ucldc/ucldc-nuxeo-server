@@ -7,6 +7,9 @@ ARG CLID
 ARG CONNECT_URL=https://connect.nuxeo.com/nuxeo/site/
 ARG NUXEO_CUSTOM_PACKAGE
 
+# hotfixes
+# nuxeoctl mp-hotfix --accept=true
+
 RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     ${NUXEO_CUSTOM_PACKAGE} \
     amazon-s3-online-storage \
@@ -16,9 +19,10 @@ RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     nuxeo-virtualnavigation \
     nuxeo-web-ui
 
-RUN rm -rf $NUXEO_HOME/local-packages
-
 COPY ./ucldc.conf /etc/nuxeo/conf.d/ucldc.conf
+
+# register
+COPY ./instance.clid /var/lib/nuxeo/instance.clid
 
 # become root
 USER 0

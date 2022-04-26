@@ -1,3 +1,4 @@
 *.zip
 exportenv.local
 *.conf
+instance.clid

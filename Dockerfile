@@ -12,7 +12,7 @@ RUN /install-hotfixes.sh --clid ${CLID} --connect-url ${CONNECT_URL}
 
 RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     ${NUXEO_CUSTOM_PACKAGE} \
-    #amazon-s3-online-storage \
+    amazon-s3-online-storage \
     nuxeo-drive \
     nuxeo-jsf-ui \
     nuxeo-quota \

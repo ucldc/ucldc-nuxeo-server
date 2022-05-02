@@ -31,6 +31,8 @@ elasticsearch.addressList=*******
 nuxeo.s3storage.bucket=*******
 nuxeo.s3storage.region=*******
 nuxeo.s3storage.cachesize=850GB
+# the following is optional
+#nuxeo.s3storage.bucket_prefix=yourfolder/
 
 nuxeo.s3storage.directdownload=true
 nuxeo.s3storage.directdownload.expire=3600
@@ -39,6 +41,21 @@ nuxeo.s3storage.pathstyleaccess=true
 ##-----------------------------------------------------------------------------
 ## Mail settings (for notifications)
 ##-----------------------------------------------------------------------------
+nuxeo.notification.eMailSubjectPrefix="[Nuxeo]"
+
+mail.transport.protocol=smtp
+mail.transport.ssl.protocol=TLSv1.2
+mail.transport.host=email-smtp.us-west-2.amazonaws.com
+mail.transport.port=25
+mail.transport.usetls=true
+
+mail.transport.auth=true
+mail.transport.user=*******
+mail.transport.password=*******
+
+mail.from=oacops@cdlib.org
+
+#mail.debug=true
 
 ##-----------------------------------------------------------------------------
 ## data, log and temp directories inside the docker container

@@ -38,3 +38,7 @@ Run the image in a container and get a shell prompt. Note: this container will b
 From the shell prompt inside the docker container, start nuxeo:
 
 `$ nuxeoctl start`
+
+## Push the image to ECR
+
+https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html

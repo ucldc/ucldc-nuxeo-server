@@ -15,6 +15,7 @@ RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     amazon-s3-online-storage \
     nuxeo-drive \
     nuxeo-jsf-ui \
+    nuxeo-platform-3d-jsf-ui \
     nuxeo-quota \
     nuxeo-virtualnavigation \
     nuxeo-web-ui

@@ -68,6 +68,12 @@ nuxeo.data.dir=/var/lib/nuxeo
 ##-----------------------------------------------------------------------------
 ## Clustering
 ## https://doc.nuxeo.com/nxdoc/nuxeo-server-architecture/#configuration
+##
+## NOTE: leave nuxeo.cluster.nodeid unset when building docker image
+## This value must be unique to each node. The Cloudformation template 
+## will append "nuxeo.cluster.nodeid=xxx" to the end of the nuxeo.conf 
+## file on each nuxeo-server node
 ##-----------------------------------------------------------------------------
-#nuxeo.cluster.enabled=true
-#nuxeo.cluster.nodeid=...
+nuxeo.cluster.enabled=true
+
+

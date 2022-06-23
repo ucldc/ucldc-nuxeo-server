@@ -27,9 +27,36 @@ COPY ./ucldc.conf /etc/nuxeo/conf.d/ucldc.conf
 
 # become root
 USER 0
-# install RPM Fusion free repository
+
+# install ffmpeg
 RUN yum -y localinstall --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
-# install ffmpeg package
 RUN yum -y install ffmpeg
+
+# install blender
+RUN yum -y install curl python python-pip
+ENV BLENDER_XZ_URL https://download.blender.org/release/Blender3.2/blender-3.2.0-linux-x64.tar.xz
+WORKDIR /usr/local/blender
+RUN curl -SL "$BLENDER_XZ_URL" -o blender.tar.xz
+RUN tar -Jxvf blender.tar.xz --strip-components=1
+RUN cp blender /usr/local/bin/
+RUN rm blender.tar.xz
+WORKDIR /
+
+# install collada2gltf
+RUN yum -y install \
+    git \
+    epel-release cmake3 \
+    make \
+    gcc-c++
+WORKDIR /usr/local/collada2gltf
+RUN git clone --recursive https://github.com/KhronosGroup/COLLADA2GLTF.git .
+RUN mkdir build
+RUN cmake3 .
+RUN make install
+RUN cp COLLADA2GLTF-bin /usr/local/bin/collada2gltf
+
+WORKDIR /
+RUN rm -rf /usr/local/collada2gltf
+
 # set back original user
 USER 900

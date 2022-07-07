@@ -32,24 +32,8 @@ USER 0
 RUN yum -y localinstall --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
 RUN yum -y install ffmpeg
 
-# install override scripts for 3D conversion
-RUN yum install -y python3
-ENV OVERRIDE_SCRIPTS_DIR /usr/local/bin/override_scripts/
-WORKDIR $OVERRIDE_SCRIPTS_DIR
-COPY --chown=900:0 ./scripts/docker_override.py .
-COPY ./docker_cmd.sh /usr/bin/docker
-RUN chmod +x /usr/bin/docker
-WORKDIR /
-
-# create directories for 3D in/out files and blender pipeline scripts
-RUN mkdir /var/lib/3d/
-RUN chown 900:0 /var/lib/3d/
-RUN mkdir /var/lib/3d/in
-RUN chown 900:0 /var/lib/3d/in
-RUN mkdir /var/lib/3d/out
-RUN chown 900:0 /var/lib/3d/out
-
-# install blender
+# install blender v3.2.0 - precompiled binary available
+# Nuxeo plugin uses blender 2.78, for which no precompiled binary is available
 RUN yum -y install curl
 ENV BLENDER_XZ_URL https://download.blender.org/release/Blender3.2/blender-3.2.0-linux-x64.tar.xz
 WORKDIR /usr/local/blender
@@ -70,6 +54,29 @@ RUN mkdir build
 RUN cmake3 .
 RUN make install
 RUN cp COLLADA2GLTF-bin /usr/local/bin/collada2gltf
+WORKDIR /
+
+# install docker override script
+RUN yum install -y python3
+ENV OVERRIDE_SCRIPTS_DIR /usr/local/bin/override_scripts/
+WORKDIR $OVERRIDE_SCRIPTS_DIR
+COPY --chown=900:0 ./override_scripts/docker_override.py .
+COPY ./docker_cmd.sh /usr/bin/docker
+RUN chmod +x /usr/bin/docker
+WORKDIR /
+
+# create directories for 3D in/out files and blender pipeline scripts
+RUN mkdir /var/lib/3d/
+RUN chown 900:0 /var/lib/3d/
+RUN mkdir /var/lib/3d/in
+RUN chown 900:0 /var/lib/3d/in
+RUN mkdir /var/lib/3d/out
+RUN chown 900:0 /var/lib/3d/out
+
+# install modified blender pipeline scripts
+ENV PIPELINE_SCRIPTS_DIR /usr/local/bin/pipeline_scripts/
+WORKDIR $PIPELINE_SCRIPTS_DIR
+COPY --chown=900:0 ./blender_scripts/ .
 WORKDIR /
 
 # set back original user

@@ -2,3 +2,5 @@
 exportenv.local
 *.conf
 instance.clid
+nuxeo-conf/
+tmp/

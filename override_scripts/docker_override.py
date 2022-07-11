@@ -13,7 +13,7 @@ COLLADA2GLTF = '/usr/local/bin/collada2gltf'
 
 def main():
     ''' Script to stand in as `docker` command and 3D run conversion commands locally. 
-        We have to do this because the nuxeo uxeo-platform-3d and uxeo-platform-3d-jsf-ui
+        We have to do this because the nuxeo-platform-3d and nuxeo-platform-3d-jsf-ui
         addons create docker containers and have them run the conversion commands.
 
         It's not a good idea to run docker from inside docker, so this is a hack to
@@ -35,7 +35,7 @@ def main():
     elif docker_cmd == 'run':
         run_cmd(args)
     elif docker_cmd == 'rm':
-        print('ok remove tmp files')
+        rm_cmd(args)
     else:
         raise ValueError(f"unexpected command: {docker_cmd}")
 
@@ -67,9 +67,22 @@ def run_cmd(args):
         subprocess.run(blender_cmd, shell=True, check=True)
     elif args[5] == 'nuxeo/collada2gltf':
         print(f"args: {args}")
-        gltf_cmd = [COLLADA2GLTF] + args[6:]
+        if args[6] == '-f' and args[8] == '-o':
+            args[6] = '-i'
+            args[7] = f"{FILE_DIR}{args[7]}"
+            args[9] = f"{FILE_DIR}{args[9]}"
+        else:
+            raise ValueError(f"run_command for collada2gltf expected args[6] to be '-f' and args[8] to be '-o")
+        gltf_cmd = [COLLADA2GLTF] + ['-v', '1.0'] + args[6:]
+        gltf_cmd = ' '.join(gltf_cmd)
+        print(f"gltf_cmd: {gltf_cmd}")
+        subprocess.run(gltf_cmd, shell=True, check=True)
     else:
         raise ValueError(f"run_cmd doesn't know what to do with these args: {args}")
+
+def rm_cmd(args):
+    ''' clean up '''
+    pass
 
 
 if __name__ == "__main__":

@@ -45,11 +45,11 @@ Set env vars needed by docker build if you haven't already:
 source ./exportenv.local
 ```
 
-Build an image tagged `ucldc/nuxeo-base:2021` using `base.Dockerfile`:
+Build an image tagged `ucldc/nuxeo-base:2021` using `Dockerfile.base`:
 
 ```
 docker build \
-	-f base.Dockerfile \
+	-f Dockerfile.base \
 	-t ucldc/nuxeo-base:2021.21 \
 	--build-arg NUXEO_VERSION \
 	--build-arg NUXEO_CUSTOM_PACKAGE \
@@ -73,11 +73,11 @@ docker build \
 
 ### Build full image using alternate Dockerfile (i.e. for local dev)
 
-Build an image tagged `ucldc/nuxeo-localdev:2021` using `localdev.Dockerfile`:
+Build an image tagged `ucldc/nuxeo-localdev:2021` using `Dockerfile.localdev`:
 
 ```
 docker build \
-	-f localdev.Dockerfile \
+	-f Dockerfile.localdev \
 	-t ucldc/nuxeo-localdev:2021 \
 	--build-arg NUXEO_VERSION \
 	--build-arg CLID \

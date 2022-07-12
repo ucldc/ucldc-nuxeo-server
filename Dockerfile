@@ -1,4 +1,3 @@
-# https://doc.nuxeo.com/nxdoc/build-a-custom-docker-image/
 ARG NUXEO_VERSION
 FROM ucldc/nuxeo-base:${NUXEO_VERSION}
 
@@ -17,10 +16,6 @@ RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
 
 # become root
 USER 0
-
-# install ffmpeg
-RUN yum -y localinstall --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
-RUN yum -y install ffmpeg
 
 # install blender v3.2.0 - precompiled binary available
 # Nuxeo plugin uses blender 2.78, for which no precompiled binary is available

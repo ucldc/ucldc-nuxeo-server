@@ -1,29 +1,19 @@
 # https://doc.nuxeo.com/nxdoc/build-a-custom-docker-image/
 ARG NUXEO_VERSION
+FROM ucldc/nuxeo-base:${NUXEO_VERSION}
 
-FROM docker-private.packages.nuxeo.com/nuxeo/nuxeo:${NUXEO_VERSION}
+ARG UCLDC_CONF=./ucldc.conf
+COPY $UCLDC_CONF /etc/nuxeo/conf.d/ucldc.conf
 
+# install packages
 ARG CLID
 ARG CONNECT_URL=https://connect.nuxeo.com/nuxeo/site/
-ARG NUXEO_CUSTOM_PACKAGE
-
-COPY --chown=900:0 ./install-hotfixes.sh /install-hotfixes.sh
-RUN /install-hotfixes.sh --clid ${CLID} --connect-url ${CONNECT_URL}
-
 RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
-    ${NUXEO_CUSTOM_PACKAGE} \
     amazon-s3-online-storage \
     nuxeo-drive \
-    nuxeo-jsf-ui \
     nuxeo-platform-3d-jsf-ui \
     nuxeo-quota \
-    nuxeo-virtualnavigation \
-    nuxeo-web-ui
-
-# register
-COPY ./instance.clid /var/lib/nuxeo/instance.clid
-
-COPY ./ucldc.conf /etc/nuxeo/conf.d/ucldc.conf
+    nuxeo-virtualnavigation
 
 # become root
 USER 0
@@ -60,8 +50,8 @@ WORKDIR /
 RUN yum install -y python3
 ENV OVERRIDE_SCRIPTS_DIR /usr/local/bin/override_scripts/
 WORKDIR $OVERRIDE_SCRIPTS_DIR
-COPY --chown=900:0 ./override_scripts/docker_override.py .
-COPY ./docker_cmd.sh /usr/bin/docker
+COPY --chown=900:0 ./files/docker-override/docker_override.py .
+COPY ./files/docker-override/docker_cmd.sh /usr/bin/docker
 RUN chmod +x /usr/bin/docker
 WORKDIR /
 
@@ -76,7 +66,7 @@ RUN chown 900:0 /var/lib/3d/out
 # install modified blender pipeline scripts
 ENV PIPELINE_SCRIPTS_DIR /usr/local/bin/pipeline_scripts/
 WORKDIR $PIPELINE_SCRIPTS_DIR
-COPY --chown=900:0 ./blender_scripts/ .
+COPY --chown=900:0 ./files/blender/ .
 WORKDIR /
 
 # set back original user

@@ -6,38 +6,101 @@ This repo contains the Dockerfile for [building the custom UCLDC nuxeo server im
 
 ### Set env vars needed for docker build
 
-`$ cp exportenv.template exportenv.local`
+````
+cp exportenv.template exportenv.local
+````
 
 Populate `exportenv.local` with relevant values, then:
 
-`$ source ./exportenv.local`
+```
+source ./exportenv.local
+```
 
-### Set nuxeo configuration values
+### Create ucldc.conf
 
-`$ cp ucldc.conf.template ucldc.conf`
+```
+cp ucldc.conf.template ucldc.conf
+```
 
 Populate `ucldc.conf` with the relevant values.
 
-### Build the image
+### Create instance.clid
+
+```
+cp instance.clid.template instance.clid
+```
+
+Populate `instance.clid` with the relevant values.
+
+### Build base image
 
 You will first need to login to Nuxeo's private docker registry (providing token name and code when prompted). (To be given access to the private docker registry, you have to file a ticket with Nuxeo). Login command:
 
-`$ docker login docker-private.packages.nuxeo.com`
+```
+docker login docker-private.packages.nuxeo.com
+```
+Set env vars needed by docker build if you haven't already:
 
-Run the following, substituting `<version>` with the version number (this is the docker tag):
+```
+source ./exportenv.local
+```
 
-`$ docker build -t ucldc/nuxeo:<version> --build-arg NUXEO_VERSION --build-arg NUXEO_CUSTOM_PACKAGE --build-arg CLID .`
+Build an image tagged `ucldc/nuxeo-base:2021` using `base.Dockerfile`:
 
+```
+docker build \
+	-f base.Dockerfile \
+	-t ucldc/nuxeo-base:2021.21 \
+	--build-arg NUXEO_VERSION \
+	--build-arg NUXEO_CUSTOM_PACKAGE \
+	--build-arg CLID \
+	.
+```
 
-## Run the custom image in a container
+### Build full image using default Dockerfile
+
+Note: make sure you have built the base image first. `Dockerfile` installs packages such as `amazon-s3-online-storage` on top of the base image created above.
+
+Build an image tagged `ucldc/nuxeo:2021` using `Dockerfile` (the default):
+
+```
+docker build \
+	-t ucldc/nuxeo:2021 \
+	--build-arg NUXEO_VERSION \
+	--build-arg CLID \
+	.
+```
+
+### Build full image using alternate Dockerfile (i.e. for local dev)
+
+Build an image tagged `ucldc/nuxeo-localdev:2021` using `localdev.Dockerfile`:
+
+```
+docker build \
+	-f localdev.Dockerfile \
+	-t ucldc/nuxeo-localdev:2021 \
+	--build-arg NUXEO_VERSION \
+	--build-arg CLID \
+	.
+```
+
+## Run the image in a container
 
 Run the image in a container and get a shell prompt. Note: this container will be removed upon exit because of the `rm` flag:
 
-`$ docker run --rm -i -t --name ucldc-nuxeo -p 8080:8080 ucldc/nuxeo:2021 /bin/bash`
+```
+docker run --rm -i -t \
+	--name ucldc-nuxeo \
+	-p 8080:8080 \
+	ucldc/nuxeo:2021 \
+	/bin/bash
+```
 
 From the shell prompt inside the docker container, start nuxeo:
 
-`$ nuxeoctl start`
+```
+nuxeoctl start
+```
 
 ## Push the image to ECR
 

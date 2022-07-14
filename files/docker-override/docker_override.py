@@ -86,8 +86,8 @@ def run_cmd(args):
 
 def rm_cmd(args):
     ''' clean up '''
-    pass
-
+    os.system(f'rm -rf {IN_DIR}/*')
+    os.system(f'rm -rf {OUT_DIR}/*')
 
 if __name__ == "__main__":
     sys.exit(main())

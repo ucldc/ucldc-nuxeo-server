@@ -12,7 +12,7 @@ BLENDER = '/usr/local/blender/blender'
 COLLADA2GLTF = '/usr/local/bin/collada2gltf'
 
 def main():
-    ''' Script to stand in as `docker` command and 3D run conversion commands locally. 
+    ''' Script to stand in as `docker` command and run 3D conversion commands locally. 
         We have to do this because the nuxeo-platform-3d and nuxeo-platform-3d-jsf-ui
         addons create docker containers and have them run the conversion commands.
 

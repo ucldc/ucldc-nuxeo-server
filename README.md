@@ -49,12 +49,12 @@ Build an image tagged `ucldc/nuxeo-base:2021` using `Dockerfile.base`:
 
 ```
 docker build \
-	-f Dockerfile.base \
-	-t ucldc/nuxeo-base:2021.21 \
-	--build-arg NUXEO_VERSION \
-	--build-arg NUXEO_CUSTOM_PACKAGE \
-	--build-arg CLID \
-	.
+    -f Dockerfile.base \
+    -t ucldc/nuxeo-base:2021.21 \
+    --build-arg NUXEO_VERSION \
+    --build-arg NUXEO_CUSTOM_PACKAGE \
+    --build-arg CLID \
+    .
 ```
 
 ### Build full image using default Dockerfile
@@ -65,10 +65,10 @@ Build an image tagged `ucldc/nuxeo:2021` using `Dockerfile` (the default):
 
 ```
 docker build \
-	-t ucldc/nuxeo:2021 \
-	--build-arg NUXEO_VERSION \
-	--build-arg CLID \
-	.
+    -t ucldc/nuxeo:2021 \
+    --build-arg NUXEO_VERSION \
+    --build-arg CLID \
+    .
 ```
 
 ### Build full image using alternate Dockerfile (i.e. for local dev)
@@ -77,10 +77,10 @@ Build an image tagged `ucldc/nuxeo-localdev:2021` using `Dockerfile.localdev`:
 
 ```
 docker build \
-	-f Dockerfile.localdev \
-	-t ucldc/nuxeo-localdev:2021 \
-	--build-arg NUXEO_VERSION \
-	.
+    -f Dockerfile.localdev \
+    -t ucldc/nuxeo-localdev:2021 \
+    --build-arg NUXEO_VERSION \
+    .
 ```
 
 ## Run the image in a container
@@ -89,10 +89,10 @@ Run the image in a container and get a shell prompt. Note: this container will b
 
 ```
 docker run --rm -i -t \
-	--name ucldc-nuxeo \
-	-p 8080:8080 \
-	ucldc/nuxeo:2021 \
-	/bin/bash
+    --name ucldc-nuxeo \
+    -p 8080:8080 \
+    ucldc/nuxeo:2021 \
+    /bin/bash
 ```
 
 From the shell prompt inside the docker container, start nuxeo:

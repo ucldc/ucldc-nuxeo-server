@@ -59,7 +59,7 @@ docker build \
 
 ### Build full image using default Dockerfile
 
-Note: make sure you have built the base image first. `Dockerfile` installs packages such as `amazon-s3-online-storage` on top of the base image created above.
+Note: make sure you have built the base image first. `Dockerfile` installs packages such as `amazon-s3-online-storage` on top of the base image created above. The reason for this 2-step build process is that some of these packages will cause errors when developing locally. TODO: figure out a better way to handle this.
 
 Build an image tagged `ucldc/nuxeo:2021` using `Dockerfile` (the default):
 

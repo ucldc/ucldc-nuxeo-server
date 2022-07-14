@@ -10,7 +10,6 @@ OUT_DIR = f'{FILE_DIR}/out'
 SCRIPT_DIR = f'{FILE_DIR}/pipeline_scripts'
 BLENDER = '/usr/local/blender/blender'
 COLLADA2GLTF = '/usr/local/bin/collada2gltf'
-GLTF_VERSION = 'v2.0'
 
 def main():
     ''' Script to stand in as `docker` command and 3D run conversion commands locally. 
@@ -70,14 +69,12 @@ def run_cmd(args):
         print(f"{blender_cmd}")
         subprocess.run(blender_cmd, shell=True, check=True)
     elif args[5] == 'nuxeo/collada2gltf':
-        print(f"args: {args}")
         if args[6] == '-f' and args[8] == '-o':
-            args[6] = '-i'
             args[7] = f"{FILE_DIR}{args[7]}"
             args[9] = f"{FILE_DIR}{args[9]}"
         else:
             raise ValueError(f"run_command for collada2gltf expected args[6] to be '-f' and args[8] to be '-o")
-        gltf_cmd = [COLLADA2GLTF] + ['-v', GLTF_VERSION] + args[6:]
+        gltf_cmd = [COLLADA2GLTF] + args[6:]
         gltf_cmd = ' '.join(gltf_cmd)
         print(f"gltf_cmd: {gltf_cmd}")
         subprocess.run(gltf_cmd, shell=True, check=True)

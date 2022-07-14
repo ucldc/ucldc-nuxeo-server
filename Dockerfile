@@ -17,17 +17,18 @@ RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
 # become root
 USER 0
 
-# install blender v3.2.0 - precompiled binary available
-# Nuxeo plugin uses blender 2.78, for which no precompiled binary is available
-RUN yum -y install curl
-ENV BLENDER_XZ_URL https://download.blender.org/release/Blender3.2/blender-3.2.0-linux-x64.tar.xz
+# install blender v2.78
+RUN yum -y install curl \
+    bzip2 \
+    mesa-libGLU
+ENV BLENDER_BZ2_URL https://download.blender.org/release/Blender2.78/blender-2.78-linux-glibc219-x86_64.tar.bz2
 WORKDIR /usr/local/blender
-RUN curl -SL "$BLENDER_XZ_URL" -o blender.tar.xz
-RUN tar -Jxvf blender.tar.xz --strip-components=1
-RUN rm blender.tar.xz
+RUN curl -SL "$BLENDER_BZ2_URL" -o blender.tar.bz2
+RUN tar -xvf blender.tar.bz2 --strip-components=1
+RUN rm blender.tar.bz2
 WORKDIR /
 
-# install collada2gltf
+# install collada2gltf (current version)
 RUN yum -y install \
     git \
     epel-release cmake3 \
@@ -43,26 +44,21 @@ WORKDIR /
 
 # install docker override script
 RUN yum install -y python3
-ENV OVERRIDE_SCRIPTS_DIR /usr/local/bin/override_scripts/
+ENV OVERRIDE_SCRIPTS_DIR /usr/local/bin/override_scripts
 WORKDIR $OVERRIDE_SCRIPTS_DIR
 COPY --chown=900:0 ./files/docker-override/docker_override.py .
 COPY ./files/docker-override/docker_cmd.sh /usr/bin/docker
 RUN chmod +x /usr/bin/docker
 WORKDIR /
 
-# create directories for 3D in/out files and blender pipeline scripts
-RUN mkdir /var/lib/3d/
-RUN chown 900:0 /var/lib/3d/
-RUN mkdir /var/lib/3d/in
-RUN chown 900:0 /var/lib/3d/in
-RUN mkdir /var/lib/3d/out
-RUN chown 900:0 /var/lib/3d/out
-
-# install modified blender pipeline scripts
-ENV PIPELINE_SCRIPTS_DIR /usr/local/bin/pipeline_scripts/
-WORKDIR $PIPELINE_SCRIPTS_DIR
-COPY --chown=900:0 ./files/blender/ .
-WORKDIR /
+# create dirs for 3D processing
+WORKDIR /var/lib/3d
+RUN chown 900:0 .
+RUN mkdir in
+RUN chown 900:0 in
+RUN mkdir out
+RUN chown 900:0 out
 
 # set back original user
 USER 900
+

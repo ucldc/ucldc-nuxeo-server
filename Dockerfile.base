@@ -12,6 +12,7 @@ RUN /install-hotfixes.sh --clid ${CLID} --connect-url ${CONNECT_URL}
 RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     ${NUXEO_CUSTOM_PACKAGE} \
     nuxeo-jsf-ui \
+    nuxeo-platform-3d-jsf-ui \
     nuxeo-web-ui
 
 # register

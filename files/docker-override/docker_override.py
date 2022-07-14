@@ -5,11 +5,12 @@ from distutils import dir_util
 import subprocess
 
 FILE_DIR = '/var/lib/3d'
-IN_DIR = '/var/lib/3d/in'
-OUT_DIR = '/var/lib/3d/out'
-SCRIPT_DIR = '/usr/local/bin/pipeline_scripts'
+IN_DIR = f'{FILE_DIR}/in'
+OUT_DIR = f'{FILE_DIR}/out'
+SCRIPT_DIR = f'{FILE_DIR}/pipeline_scripts'
 BLENDER = '/usr/local/blender/blender'
 COLLADA2GLTF = '/usr/local/bin/collada2gltf'
+GLTF_VERSION = 'v2.0'
 
 def main():
     ''' Script to stand in as `docker` command and 3D run conversion commands locally. 
@@ -46,7 +47,10 @@ def cp_cmd(src, dst):
             source = os.path.join(src_dir, filename)
             shutil.copy(source, IN_DIR)
     elif dst.endswith(':/scripts/'):
-        pass
+        src_dir = src.rstrip('.')
+        if os.path.exists(SCRIPT_DIR):
+            shutil.rmtree(SCRIPT_DIR)
+        shutil.copytree(src_dir, SCRIPT_DIR)
     elif src.endswith(':/out/.'):
         dir_util.copy_tree(OUT_DIR, dst)
     else:
@@ -73,7 +77,7 @@ def run_cmd(args):
             args[9] = f"{FILE_DIR}{args[9]}"
         else:
             raise ValueError(f"run_command for collada2gltf expected args[6] to be '-f' and args[8] to be '-o")
-        gltf_cmd = [COLLADA2GLTF] + ['-v', '1.0'] + args[6:]
+        gltf_cmd = [COLLADA2GLTF] + ['-v', GLTF_VERSION] + args[6:]
         gltf_cmd = ' '.join(gltf_cmd)
         print(f"gltf_cmd: {gltf_cmd}")
         subprocess.run(gltf_cmd, shell=True, check=True)

@@ -80,7 +80,6 @@ docker build \
 	-f Dockerfile.localdev \
 	-t ucldc/nuxeo-localdev:2021 \
 	--build-arg NUXEO_VERSION \
-	--build-arg CLID \
 	.
 ```
 

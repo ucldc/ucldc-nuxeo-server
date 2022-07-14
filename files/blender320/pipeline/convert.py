@@ -1,6 +1,5 @@
 ''' 
     copied from https://github.com/nuxeo/nuxeo/tree/10.10/addons/nuxeo-platform-3d/nuxeo-platform-3d-convert/src/main/resources/scripts 
-    updated for use with blender v3.2
 '''
 if args.outdir == None:
     sys.exit()

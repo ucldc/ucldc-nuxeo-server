@@ -101,11 +101,13 @@ Nuxeo will start up and logs will be written to `/home/ec2-user/log`.
 
 To stop Nuxeo, run: 
 
+```
 docker exec nuxeo nuxeoctl stop
+```
 
 See https://doc.nuxeo.com/nxdoc/quickstart-docker-nuxeo/ for more info.
 
-Alternatively, for development purposed, here's how to run the image in a container and get a shell prompt. Note: this container will be removed upon exit because of the `rm` flag:
+Alternatively, for development purposes, here's how to run the image in a container and get a shell prompt. Note: this container will be removed upon exit because of the `rm` flag:
 
 ```
 docker run --rm -i -t \

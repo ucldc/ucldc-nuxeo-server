@@ -1,0 +1,81 @@
+##=============================================================================
+## UCLDC specific configuration file
+##=============================================================================
+
+nuxeo.url={{ nuxeo_url }}
+
+##-----------------------------------------------------------------------------
+## database
+##-----------------------------------------------------------------------------
+nuxeo.db.name=nuxeo
+nuxeo.db.user=nuxeo
+nuxeo.db.password={{ nuxeo_db_password }}
+nuxeo.db.host={{ nuxeo_db_host }}
+nuxeo.db.port=5432
+
+##-----------------------------------------------------------------------------
+## redis
+##-----------------------------------------------------------------------------
+nuxeo.redis.enabled=true
+nuxeo.redis.host={{ nuxeo_redis_host }}
+nuxeo.redis.prefix=nuxeo2021:
+
+##-----------------------------------------------------------------------------
+## elasticsearch
+##-----------------------------------------------------------------------------
+elasticsearch.addressList={{ elasticsearch_address_list }}
+elasticsearch.fetchDocFromEs=true
+elasticsearch.override.pageproviders=default_search,default_document_suggestion,DEFAULT_DOCUMENT_SUGGESTION,advanced_document_content,domain_documents,expired_search,default_trash_search,REST_API_SEARCH_ADAPTER,all_collections,simple_search,document_content,section_content,document_trash_content,orderable_document_content,document_picker,user_documents,user_workspaces,user_sections,customAdvancedSearch
+
+##-----------------------------------------------------------------------------
+## S3 data storage
+##-----------------------------------------------------------------------------
+nuxeo.s3storage.bucket={{ nuxeo_s3storage_bucket }}
+nuxeo.s3storage.region={{ nuxeo_s3storage_region }}
+nuxeo.s3storage.cachesize=850GB
+# the following is optional
+#nuxeo.s3storage.bucket_prefix=yourfolder/
+
+nuxeo.s3storage.directdownload=true
+nuxeo.s3storage.directdownload.expire=3600
+nuxeo.s3storage.pathstyleaccess=true
+
+##-----------------------------------------------------------------------------
+## Mail settings (for notifications)
+##-----------------------------------------------------------------------------
+nuxeo.notification.eMailSubjectPrefix="[Nuxeo]"
+
+mail.transport.protocol=smtp
+mail.transport.ssl.protocol=TLSv1.2
+mail.transport.host=email-smtp.us-west-2.amazonaws.com
+mail.transport.port=25
+mail.transport.usetls=true
+
+mail.transport.auth=true
+mail.transport.user={{ mail_transport_user }}
+mail.transport.password={{ mail_transport_password }}
+
+mail.from=oacops@cdlib.org
+
+#mail.debug=true
+
+##-----------------------------------------------------------------------------
+## data, log and temp directories inside the docker container
+## see https://doc.nuxeo.com/nxdoc/setup-best-practices/#mounting-data-log-and-temporary-directories-as-volumes
+##-----------------------------------------------------------------------------
+nuxeo.log.dir=/var/log/nuxeo
+nuxeo.tmp.dir=/tmp
+nuxeo.data.dir=/var/lib/nuxeo
+
+##-----------------------------------------------------------------------------
+## Clustering
+## https://doc.nuxeo.com/nxdoc/nuxeo-server-architecture/#configuration
+##
+## NOTE: leave nuxeo.cluster.nodeid unset when building docker image
+## This value must be unique to each node. The Cloudformation template 
+## will append "nuxeo.cluster.nodeid=xxx" to the end of the nuxeo.conf 
+## file on each nuxeo-server node
+##-----------------------------------------------------------------------------
+nuxeo.cluster.enabled=true
+
+

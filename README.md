@@ -125,4 +125,4 @@ nuxeoctl start
 
 ## Push the image to ECR
 
-https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html 
+https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html

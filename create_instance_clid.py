@@ -1,28 +1,46 @@
 import sys, os
+import argparse
+import boto3
 import json
 from jinja2 import Environment, FileSystemLoader
-from get_secret import main as get_secret
 
 '''
-Create instance.clid file using value from AWS Secrets Manager
+Create instance.clid file using values from AWS Parameter Store
 '''
-def main():
-    secret = json.loads(get_secret("nuxeo/cliid", "us-west-2"))
-    cli_id = secret["nuxeo-cli-id"]
-    uuid = secret["uuid"]
-    desc = secret["description"]
+def main(params):
+    param_path = f"/nuxeo/{params.version}-{params.env}/instance_cliid"
+    session = boto3.Session(region_name='us-west-2')
+    ssm = session.client('ssm')
+
+    response = ssm.get_parameters_by_path(
+        Path=param_path,
+        WithDecryption=True
+    )
+
+    params = response['Parameters']
+
+    param_dict = {}
+    for p in params:
+        param_dict[p['Name']] = p['Value']
 
     environment = Environment(loader=FileSystemLoader("templates/"))
     template = environment.get_template('instance.clid.template')
 
     content = template.render(
-        CLID=cli_id,
-        UUID=uuid,
-        description=desc
+        CLID=param_dict[f'{param_path}/cli_id'],
+        UUID=param_dict[f'{param_path}/uuid'],
+        description=param_dict[f'{param_path}/description'],
     )
 
-    with open("instance.clid", "w") as f:
+    filename = "instance.clid"
+    with open(filename, "w") as f:
         f.write(content)
 
+    print(f"Wrote file `{filename}`")
+
 if __name__ == "__main__":
-    sys.exit(main())
+    parser = argparse.ArgumentParser()
+    parser.add_argument('env', choices=['prod', 'stg'])
+    parser.add_argument('version', choices=['2021'])
+    args = parser.parse_args()
+    sys.exit(main(args))

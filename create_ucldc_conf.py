@@ -9,7 +9,6 @@ Create ucldc.conf file using values from AWS Parameter Store
 '''
 def main(params):
     param_path = f"/nuxeo/{params.version}-{params.env}/nuxeo_conf"
-    print(f"{param_path=}")
     session = boto3.Session(region_name='us-west-2')
     ssm = session.client('ssm')
 
@@ -39,8 +38,11 @@ def main(params):
         mail_transport_password = param_dict[f'{param_path}/mail_transport_password']
     )
 
-    with open("ucldc.conf", "w") as f:
+    filename = "ucldc.conf"
+    with open(filename, "w") as f:
         f.write(content)
+
+    print(f"Wrote file `{filename}`")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

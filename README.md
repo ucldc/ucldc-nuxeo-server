@@ -2,7 +2,26 @@
 
 This repo contains the Dockerfile for [building the custom UCLDC nuxeo server image](https://doc.nuxeo.com/nxdoc/build-a-custom-docker-image/). This image is built on top of the official Nuxeo docker image and includes the custom package that we built in Nuxeo Studio.
 
-## Build the custom image
+## Build Docker Image and Push to ECR
+
+There is an AWS CodeBuild project for automatically building the Docker image and pushing it to ECR defined as a CloudFormation template here: [https://github.com/cdlib/ucldc-nuxeo-deploy](https://github.com/cdlib/ucldc-nuxeo-deploy) [private repo]
+
+## Build Docker Image Locally
+
+### Create ucldc.conf
+
+For local dev, all you need is an empty `ucldc.conf` file:
+
+```
+touch ucldc.conf
+```
+
+### Create instance.clid
+
+```
+python create_ucldc_conf.py <version> <env>
+```
+This script fetches the values from AWS Parameter Store and creates an `instance.clid` file.
 
 ### Set env vars needed for docker build
 
@@ -10,29 +29,15 @@ This repo contains the Dockerfile for [building the custom UCLDC nuxeo server im
 cp exportenv.template exportenv.local
 ````
 
-Populate `exportenv.local` with relevant values, then:
+Populate `exportenv.local` with relevant values. Note: you can use the CLID from the `instance.clid` file above. 
+
+Set your environment variables:
 
 ```
 source ./exportenv.local
 ```
 
-### Create ucldc.conf
-
-```
-cp ucldc.conf.template ucldc.conf
-```
-
-Populate `ucldc.conf` with the relevant values.
-
-### Create instance.clid
-
-```
-cp instance.clid.template instance.clid
-```
-
-Populate `instance.clid` with the relevant values.
-
-### Build base image
+### Build image
 
 You will first need to login to Nuxeo's private docker registry (providing token name and code when prompted). (To be given access to the private docker registry, you have to file a ticket with Nuxeo). Login command:
 
@@ -45,31 +50,18 @@ Set env vars needed by docker build if you haven't already:
 source ./exportenv.local
 ```
 
-Build an image tagged `ucldc/nuxeo-base:2021` using `Dockerfile.base`:
-
-```
-docker build \
-    -f Dockerfile.base \
-    -t ucldc/nuxeo-base:2021.21 \
-    --build-arg NUXEO_VERSION \
-    --build-arg NUXEO_CUSTOM_PACKAGE \
-    --build-arg CLID \
-    .
-```
-
-### Build full image using default Dockerfile
-
-Note: make sure you have built the base image first. `Dockerfile` installs packages such as `amazon-s3-online-storage` on top of the base image created above. The reason for this 2-step build process is that some of these packages will cause errors when developing locally. TODO: figure out a better way to handle this.
-
 Build an image tagged `ucldc/nuxeo:2021` using `Dockerfile` (the default):
 
 ```
 docker build \
     -t ucldc/nuxeo:2021 \
     --build-arg NUXEO_VERSION \
+    --build-arg NUXEO_CUSTOM_PACKAGE \
     --build-arg CLID \
     .
 ```
+
+Note: `Dockerfile` installs packages such as `amazon-s3-online-storage` that will cause errors when installed locally, i.e. without an s3 bucket defined in nuxeo.conf. You may find that you want to comment out some package installs in the Dockerfile.
 
 ### Build full image using alternate Dockerfile (i.e. for local dev)
 
@@ -91,13 +83,13 @@ Run the image in a container as daemon with host directories mounted into the co
 docker run -d \
     --name ucldc-nuxeo \
     -p 8080:8080 \   
-    -v /home/ec2-user/data:/var/lib/nuxeo \   
-    -v /home/ec2-user/log:/var/log/nuxeo \   
-    -v /home/ec2-user/tmp:/tmp \ 
+    -v /path/to/ucldc-nuxeo-server/data:/var/lib/nuxeo \   
+    -v /path/to/ucldc-nuxeo-server/log:/var/log/nuxeo \   
+    -v /path/to/ucldc-nuxeo-server/tmp:/tmp \ 
     ucldc/nuxeo:2021
 ```
 
-Nuxeo will start up and logs will be written to `/home/ec2-user/log`.
+Nuxeo will start up and logs will be written to `/path/to/ucldc-nuxeo-server/log`.
 
 To stop Nuxeo, run: 
 
@@ -105,7 +97,7 @@ To stop Nuxeo, run:
 docker exec nuxeo nuxeoctl stop
 ```
 
-See https://doc.nuxeo.com/nxdoc/quickstart-docker-nuxeo/ for more info.
+See [https://doc.nuxeo.com/nxdoc/quickstart-docker-nuxeo/](https://doc.nuxeo.com/nxdoc/quickstart-docker-nuxeo/) for more info.
 
 Alternatively, for development purposes, here's how to run the image in a container and get a shell prompt. Note: this container will be removed upon exit because of the `rm` flag:
 
@@ -123,6 +115,3 @@ From the shell prompt inside the docker container, start nuxeo:
 nuxeoctl start
 ```
 
-## Push the image to ECR
-
-https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html

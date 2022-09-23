@@ -6,3 +6,4 @@ nuxeo-conf/
 tmp/
 __pycache__/
 env/
+.clid

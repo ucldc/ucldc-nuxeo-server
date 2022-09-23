@@ -1,7 +1,11 @@
 ##=============================================================================
-## UCLDC specific configuration file
+## UCLDC specific configuration
 ##=============================================================================
 
+##-----------------------------------------------------------------------------
+## General parameters
+##-----------------------------------------------------------------------------
+nuxeo.templates=postgresql,drive,s3binaries
 nuxeo.url={{ nuxeo_url }}
 
 ##-----------------------------------------------------------------------------
@@ -12,6 +16,12 @@ nuxeo.db.user=nuxeo
 nuxeo.db.password={{ nuxeo_db_password }}
 nuxeo.db.host={{ nuxeo_db_host }}
 nuxeo.db.port=5432
+#nuxeo.db.validationQuery=SELECT 1
+#nuxeo.vcs.idle-timeout-minutes=600
+#nuxeo.vcs.active-timeout-minutes=300
+#nuxeo.db.transactiontimeout=3000
+#nuxeo.db.idle-timeout-minutes=30
+#nuxeo.db.active-timeout-minutes=30
 
 ##-----------------------------------------------------------------------------
 ## redis
@@ -43,7 +53,7 @@ nuxeo.s3storage.pathstyleaccess=true
 ##-----------------------------------------------------------------------------
 ## Mail settings (for notifications)
 ##-----------------------------------------------------------------------------
-nuxeo.notification.eMailSubjectPrefix="[Nuxeo]"
+nuxeo.notification.eMailSubjectPrefix=[Nuxeo]
 
 mail.transport.protocol=smtp
 mail.transport.ssl.protocol=TLSv1.2

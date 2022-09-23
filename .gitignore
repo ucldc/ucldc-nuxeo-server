@@ -4,3 +4,5 @@ exportenv.local
 instance.clid
 nuxeo-conf/
 tmp/
+__pycache__/
+env/

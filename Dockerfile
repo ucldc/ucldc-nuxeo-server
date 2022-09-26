@@ -6,24 +6,11 @@ ARG CLID
 ARG CONNECT_URL=https://connect.nuxeo.com/nuxeo/site/
 ARG NUXEO_CUSTOM_PACKAGE
 
-# register
-COPY ./instance.clid /var/lib/nuxeo/instance.clid
-
-# become root
-USER 0
-
 # install hotfixes
-# for some reason (permissions?), creating this file isn't working inside the script:
-WORKDIR /opt/nuxeo/server/nxserver/data
-COPY ./instance.clid .
-WORKDIR /
-COPY ./files/install-hotfixes.sh /install-hotfixes.sh
+COPY --chown=900:0 ./files/install-hotfixes.sh /install-hotfixes.sh
 RUN /install-hotfixes.sh --clid ${CLID} --connect-url ${CONNECT_URL}
 
 # install packages
-WORKDIR /opt/nuxeo/server/nxserver/data
-COPY ./instance.clid .
-WORKDIR /
 RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     ${NUXEO_CUSTOM_PACKAGE} \
     nuxeo-jsf-ui \
@@ -34,6 +21,12 @@ RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     nuxeo-quota \
     nuxeo-quota-jsf-ui \
     nuxeo-virtualnavigation
+
+# register
+COPY ./instance.clid /var/lib/nuxeo/instance.clid
+
+# become root
+USER 0
 
 # install ffmpeg
 RUN yum -y localinstall --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm

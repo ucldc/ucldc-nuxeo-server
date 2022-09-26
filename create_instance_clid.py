@@ -34,9 +34,15 @@ def main(params):
     environment = Environment(loader=FileSystemLoader("templates/"))
     template = environment.get_template('instance.clid.template')
 
+    # split clid into 2 parts
+    clid = param_dict[f'{param_path}/cli_id']
+    parts = clid.split('--')
+    part1 = parts[0]
+    part2 = parts[1]
+
     content = template.render(
-        CLID=param_dict[f'{param_path}/cli_id'],
-        UUID=param_dict[f'{param_path}/uuid'],
+        CLID=part1,
+        UUID=part2,
         description=param_dict[f'{param_path}/description'],
     )
 

@@ -11,7 +11,7 @@ COPY --chown=900:900 ./files/install-hotfixes.sh /install-hotfixes.sh
 RUN /install-hotfixes.sh --clid ${CLID} --connect-url ${CONNECT_URL}
 
 # install packages
-RUN chown 900:900 install-packages
+RUN chown install-packages 900:900
 RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     ${NUXEO_CUSTOM_PACKAGE} \
     nuxeo-jsf-ui \

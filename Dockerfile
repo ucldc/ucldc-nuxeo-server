@@ -7,10 +7,11 @@ ARG CONNECT_URL=https://connect.nuxeo.com/nuxeo/site/
 ARG NUXEO_CUSTOM_PACKAGE
 
 # install hotfixes
-COPY --chown=900:0 ./files/install-hotfixes.sh /install-hotfixes.sh
+COPY --chown=900:900 ./files/install-hotfixes.sh /install-hotfixes.sh
 RUN /install-hotfixes.sh --clid ${CLID} --connect-url ${CONNECT_URL}
 
 # install packages
+RUN chown install-packages 900:900
 RUN /install-packages.sh --clid ${CLID} --connect-url ${CONNECT_URL} \
     ${NUXEO_CUSTOM_PACKAGE} \
     nuxeo-jsf-ui \
@@ -83,5 +84,10 @@ RUN mkdir out
 RUN chown 900:0 out
 WORKDIR /
 
-# set back original user
+# change permissions
+RUN chown -R nuxeo:nuxeo /tmp
+RUN chown -R nuxeo:nuxeo /var/log/nuxeo
+RUN chown -R nuxeo:nuxeo /var/lib/nuxeo
+
+# set back original user (nuxeo)
 USER 900

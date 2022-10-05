@@ -5,6 +5,10 @@ FROM docker-private.packages.nuxeo.com/nuxeo/nuxeo:${NUXEO_VERSION}
 ARG CLID
 ARG CONNECT_URL=https://connect.nuxeo.com/nuxeo/site/
 ARG NUXEO_CUSTOM_PACKAGE
+ARG UCLDC_CONF=./ucldc.conf
+
+# put custom conf file in place
+COPY $UCLDC_CONF /etc/nuxeo/conf.d/ucldc.conf
 
 # install hotfixes
 COPY --chown=900:0 ./files/install-hotfixes.sh /install-hotfixes.sh

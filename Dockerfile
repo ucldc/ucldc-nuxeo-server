@@ -87,5 +87,8 @@ RUN mkdir out
 RUN chown 900:0 out
 WORKDIR /
 
+# update packages
+RUN yum update
+
 # set back original user
 USER 900

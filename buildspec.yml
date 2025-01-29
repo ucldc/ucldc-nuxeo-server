@@ -5,7 +5,7 @@ phases:
     on-failure: ABORT
     commands:
       # log into ECR private
-      - aws ecr get-login-password --region ${AWS::Region} | docker login --username AWS --password-stdin ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com
+      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 866216109762.dkr.ecr.us-west-2.amazonaws.com
       # log into Nuxeo's private docker repo
       - docker login docker-private.packages.nuxeo.com -u ${NuxeoPrivateDockerLogin} -p ${NuxeoPrivateDockerPassword}
   build:

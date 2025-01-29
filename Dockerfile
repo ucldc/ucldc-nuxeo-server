@@ -17,10 +17,10 @@ RUN /install-packages.sh --clid ${CLID} --connect-url https://connect.nuxeo.com/
 
 # install ffmpeg package
 USER 0
-RUN dnf update \
-   && dnf install epel-release \
-   && dnf config-manager --set-enabled ol9_codeready_builder \
-   && dnf config-manager --set-enabled ol9_developer_EPEL \
-   && dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
-RUN dnf install ffmpeg
+RUN dnf -y update \
+   && dnf -y install epel-release \
+   && dnf -y config-manager --set-enabled ol9_codeready_builder \
+   && dnf -y config-manager --set-enabled ol9_developer_EPEL \
+   && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+RUN dnf -y install ffmpeg
 USER 900

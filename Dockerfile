@@ -7,8 +7,8 @@ ARG NUXEO_CUSTOM_PACKAGE
 
 # install ffmpeg package
 USER 0
-RUN dnf -y update
-RUN dnf -y --allowerasing install epel-release \
+RUN dnf -y --allowerasing update
+RUN dnf -y install epel-release \
 RUN dnf -y config-manager --set-enabled ol9_codeready_builder \
 RUN dnf -y config-manager --set-enabled ol9_developer_EPEL \
 RUN dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm

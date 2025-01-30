@@ -6,7 +6,7 @@ ARG CLID
 ARG NUXEO_CUSTOM_PACKAGE
 
 RUN /install-packages.sh --clid ${CLID} --connect-url https://connect.nuxeo.com/nuxeo/site/ \
-    #${NUXEO_CUSTOM_PACKAGE} \
+    ${NUXEO_CUSTOM_PACKAGE} \
     nuxeo-jsf-ui \
     nuxeo-web-ui \
     amazon-s3-online-storage \

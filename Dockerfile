@@ -5,6 +5,17 @@ FROM docker-private.packages.nuxeo.com/nuxeo/nuxeo:${NUXEO_VERSION}
 ARG CLID
 ARG NUXEO_CUSTOM_PACKAGE
 
+# install ffmpeg package
+USER 0
+RUN dnf -y update \
+   && dnf -y --allowerasing install epel-release \
+   && dnf -y config-manager --set-enabled ol9_codeready_builder \
+   && dnf -y config-manager --set-enabled ol9_developer_EPEL \
+   && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+RUN dnf -y install ffmpeg
+USER 900
+
+# install Nuxeo packages
 RUN /install-packages.sh --clid ${CLID} --connect-url https://connect.nuxeo.com/nuxeo/site/ \
     ${NUXEO_CUSTOM_PACKAGE} \
     nuxeo-jsf-ui \
@@ -14,13 +25,3 @@ RUN /install-packages.sh --clid ${CLID} --connect-url https://connect.nuxeo.com/
     nuxeo-quota \
     nuxeo-quota-jsf-ui \
     nuxeo-virtualnavigation
-
-# install ffmpeg package
-USER 0
-RUN dnf -y update \
-   && dnf -y install epel-release \
-   && dnf -y config-manager --set-enabled ol9_codeready_builder \
-   && dnf -y config-manager --set-enabled ol9_developer_EPEL \
-   && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
-RUN dnf -y install ffmpeg
-USER 900

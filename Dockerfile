@@ -16,7 +16,7 @@ RUN if [[ -n "$NUXEO_CUSTOM_PACKAGE" ]] ; then \
     fi
 
 # install production-only packages
-RUN if [ $DEV != "true" ]; then \
+RUN if [[ $DEV != true ]]; then \
     /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
     amazon-s3-online-storage ; \
 fi

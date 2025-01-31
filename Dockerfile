@@ -3,20 +3,19 @@ ARG NUXEO_VERSION=latest
 FROM docker-private.packages.nuxeo.com/nuxeo/nuxeo:${NUXEO_VERSION}
 
 ARG NUXEO_CLID
+# NUXEO_CLID needs to be set in container environment as this triggers registration
 ENV NUXEO_CLID=${NUXEO_CLID}
 ARG NUXEO_CUSTOM_PACKAGE
-ENV NUXEO_CUSTOM_PACKAGE=${NUXEO_CUSTOM_PACKAGE}
 ARG DEV
-ENV DEV=${DEV}
 
 # install CDL's nuxeo custom package
-RUN if [[ -n "$NUXEO_CUSTOM_PACKAGE" ]] ; then \
+RUN if [[ -n "${NUXEO_CUSTOM_PACKAGE}" ]] ; then \
         /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
-        $NUXEO_CUSTOM_PACKAGE ; \
+        ${NUXEO_CUSTOM_PACKAGE} ; \
     fi
 
 # install production-only packages
-RUN if [[ $DEV != true ]]; then \
+RUN if [[ ${DEV} != true ]]; then \
     /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
     amazon-s3-online-storage ; \
 fi

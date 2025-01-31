@@ -10,7 +10,7 @@ ARG DEV
 ENV DEV=${DEV}
 
 # install CDL's nuxeo custom package
-RUN if [[ -n $NUXEO_CUSTOM_PACKAGE ]] ; then \
+RUN if [[ -n "$NUXEO_CUSTOM_PACKAGE" ]] ; then \
         /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
         $NUXEO_CUSTOM_PACKAGE ; \
     fi

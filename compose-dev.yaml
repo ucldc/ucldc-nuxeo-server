@@ -1,0 +1,16 @@
+services:
+  nuxeo:
+    image: ucldc/nuxeo
+    pull_policy: never
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - NUXEO_VERSION=${NUXEO_VERSION}
+        - NUXEO_CLID=${NUXEO_CLID}
+        - NUXEO_CUSTOM_PACKAGE=${NUXEO_CUSTOM_PACKAGE}
+        - DEV=${DEV}
+      tags:
+        - ucldc/nuxeo
+    ports:
+      - "8080:8080"

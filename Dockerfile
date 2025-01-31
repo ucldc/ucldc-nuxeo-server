@@ -2,22 +2,29 @@
 ARG NUXEO_VERSION=latest
 FROM docker-private.packages.nuxeo.com/nuxeo/nuxeo:${NUXEO_VERSION}
 
-ARG CLID
+ARG NUXEO_CLID
+ENV NUXEO_CLID=${NUXEO_CLID}
 ARG NUXEO_CUSTOM_PACKAGE
 ENV NUXEO_CUSTOM_PACKAGE=${NUXEO_CUSTOM_PACKAGE}
+ARG DEV
+ENV DEV=${DEV}
 
-# install CDL's Nuxeo custom package (if build arg is provided)
-RUN if ! [[ -z "$NUXEO_CUSTOM_PACKAGE" ]] ; \
-        then \
-        /install-packages.sh --clid ${CLID} --connect-url https://connect.nuxeo.com/nuxeo/site/ \
-        ${NUXEO_CUSTOM_PACKAGE} ; \
+# install CDL's nuxeo custom package
+RUN if [[ -n "$NUXEO_CUSTOM_PACKAGE" ]] ; then \
+        /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
+        $NUXEO_CUSTOM_PACKAGE ; \
     fi
 
-# install other Nuxeo packages
-RUN /install-packages.sh --clid ${CLID} --connect-url https://connect.nuxeo.com/nuxeo/site/ \
+# install production-only packages
+RUN if [ "$DEV" != "true" ]; then \
+    /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
+    amazon-s3-online-storage ; \
+fi
+
+# install remaining nuxeo packages
+RUN /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
     nuxeo-jsf-ui \
     nuxeo-web-ui \
-    amazon-s3-online-storage \
     nuxeo-drive \
     nuxeo-quota \
     nuxeo-quota-jsf-ui \
@@ -32,3 +39,9 @@ RUN dnf -y --allowerasing update \
    && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
 RUN dnf -y install ffmpeg
 USER 900
+
+# put docker entrypoint script in place
+COPY --chown=900:0 --chmod=744 ./docker-entrypoint.sh /cdl-docker-entrypoint.sh
+
+ENTRYPOINT ["/cdl-docker-entrypoint.sh"]
+CMD ["nuxeoctl", "console"]

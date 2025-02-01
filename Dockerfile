@@ -29,7 +29,7 @@ RUN /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.
     nuxeo-quota-jsf-ui \
     nuxeo-virtualnavigation
 
-# install ffmpeg
+# install system packages
 USER 0
 RUN dnf -y --allowerasing update \
    && dnf -y install epel-release \
@@ -37,9 +37,22 @@ RUN dnf -y --allowerasing update \
    && dnf -y config-manager --set-enabled ol9_developer_EPEL \
    && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
 RUN dnf -y install ffmpeg
+RUN dnf -y install \
+    python3 \
+    python3-pip \
+    python3-setuptools \
+    python3-pip-wheel
 USER 900
 
+# put client config script in place
+WORKDIR /client_config
+COPY client_config/templates/ ./templates/
+COPY client_config/requirements.txt .
+COPY --chmod=744 client_config/configure.py .
+RUN pip install -r requirements.txt
+
 # put docker entrypoint script in place
+WORKDIR /
 COPY --chown=900:0 --chmod=744 ./docker-entrypoint.sh /cdl-docker-entrypoint.sh
 
 ENTRYPOINT ["/cdl-docker-entrypoint.sh"]

@@ -1,52 +1,54 @@
 import sys, os
-import argparse
+
 import boto3
-import json
 from jinja2 import Environment, FileSystemLoader
 
-'''
-Create ucldc.conf file using values from AWS Parameter Store
-'''
-def main(params):
-    param_path = f"/nuxeo/{params.version}-{params.env}/nuxeo_conf"
-    session = boto3.Session(region_name='us-west-2')
-    ssm = session.client('ssm')
+def get_passwords_from_parameter_store(prefix):
+    session = boto3.Session(region_name="us-west-2")
+    ssm = session.client("ssm")
 
-    response = ssm.get_parameters_by_path(
-        Path=param_path,
+    response = ssm.get_parameters(
+        Names=[
+            f"{prefix}/db_password",
+            f"{prefix}/mail_transport_password"
+        ],
         WithDecryption=True
     )
-
-    params = response['Parameters']
-
+    params = response["Parameters"]
     param_dict = {}
     for p in params:
-        param_dict[p['Name']] = p['Value']
+        param_dict[p["Name"]] = p["Value"]
+    
+    return param_dict
 
-    environment = Environment(loader=FileSystemLoader("templates/"))
-    template = environment.get_template('ucldc.conf.template')
+def main():
+    '''
+    Create nuxeo.conf file for environment (prod or stg)
+    '''
+    template_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
+    environment = Environment(loader=FileSystemLoader(template_dir))
+    template = environment.get_template("nuxeo.conf.j2")
+
+    env = os.environ['NUXEO_ENV']
+    parameter_prefix = f"/nuxeo/{env}"
+    passwords = get_passwords_from_parameter_store(parameter_prefix)
 
     content = template.render(
-        nuxeo_url = param_dict[f'{param_path}/nuxeo_url'],
-        nuxeo_db_password = param_dict[f'{param_path}/nuxeo_db_password'],
-        nuxeo_db_host = param_dict[f'{param_path}/nuxeo_db_host'],
-        nuxeo_redis_host = param_dict[f'{param_path}/nuxeo_redis_host'],
-        elasticsearch_address_list = param_dict[f'{param_path}/elasticsearch_address_list'],
-        nuxeo_s3storage_bucket = param_dict[f'{param_path}/nuxeo_s3storage_bucket'],
-        nuxeo_s3storage_region = param_dict[f'{param_path}/nuxeo_s3storage_region'],
-        mail_transport_user = param_dict[f'{param_path}/mail_transport_user'],
-        mail_transport_password = param_dict[f'{param_path}/mail_transport_password']
+        nuxeo_url = os.environ["NUXEO_URL"],
+        nuxeo_db_password = passwords[f'{parameter_prefix}/db_password'],
+        nuxeo_db_host = os.environ["NUXEO_DB_HOST"],
+        nuxeo_redis_host = os.environ["NUXEO_REDIS_HOST"],
+        elasticsearch_address_list = os.environ["NUXEO_ELASTICSEARCH_ENDPOINT"],
+        nuxeo_s3storage_bucket = os.environ["NUXEO_S3_BUCKET"],
+        nuxeo_s3storage_region = os.environ["NUXEO_S3_REGION"],
+        mail_transport_user = os.environ["MAIL_TRANSPORT_USER"],
+        mail_transport_password = passwords[f'{parameter_prefix}/mail_transport_password']
     )
 
-    filename = "ucldc.conf"
-    with open(filename, "w") as f:
+    with open('/etc/nuxeo/nuxeo.conf', 'w') as f:
         f.write(content)
 
-    print(f"Wrote file `{filename}`")
+    print(f"Configured nuxeo.conf for {env}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('env', choices=['prod', 'stg'])
-    parser.add_argument('version', choices=['2021'])
-    args = parser.parse_args()
-    sys.exit(main(args))
+    sys.exit(main())

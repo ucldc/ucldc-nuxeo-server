@@ -12,5 +12,6 @@ services:
         - DEV=${DEV}
       tags:
         - ucldc/nuxeo
+    env_file: .env.docker.dev
     ports:
       - "8080:8080"

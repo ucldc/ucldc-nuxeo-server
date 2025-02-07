@@ -53,7 +53,7 @@ RUN pip install -r requirements.txt
 
 # put docker entrypoint script in place
 WORKDIR /
-COPY --chown=900:0 --chmod=744 ./docker-entrypoint.sh /cdl-docker-entrypoint.sh
+COPY --chown=900:0 --chmod=744 ./ucldc-docker-entrypoint.sh /ucldc-docker-entrypoint.sh
 
-ENTRYPOINT ["/cdl-docker-entrypoint.sh"]
+ENTRYPOINT ["/ucldc-docker-entrypoint.sh"]
 CMD ["nuxeoctl", "console"]

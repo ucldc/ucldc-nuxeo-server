@@ -38,7 +38,7 @@ def main():
         nuxeo_db_password = passwords[f'{parameter_prefix}/db_password'],
         nuxeo_db_host = os.environ["NUXEO_DB_HOST"],
         nuxeo_redis_host = os.environ["NUXEO_REDIS_HOST"],
-        elasticsearch_address_list = os.environ["NUXEO_ELASTICSEARCH_ENDPOINT"],
+        elasticsearch_address = os.environ["NUXEO_ELASTICSEARCH_ENDPOINT"],
         nuxeo_s3storage_bucket = os.environ["NUXEO_S3_BUCKET"],
         nuxeo_s3storage_region = os.environ["NUXEO_S3_REGION"],
         mail_transport_user = os.environ["MAIL_TRANSPORT_USER"],

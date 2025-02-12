@@ -45,10 +45,10 @@ def main():
         mail_transport_password = passwords[f'{parameter_prefix}/mail_transport_password']
     )
 
-    with open('/etc/nuxeo/nuxeo.conf', 'w') as f:
+    with open('/etc/nuxeo/conf.d/ucldc.conf', 'w') as f:
         f.write(content)
 
-    print(f"Configured nuxeo.conf for {env}")
+    print(f"Wrote /etc/nuxeo/conf.d/ucldc.conf for {env}")
 
 if __name__ == "__main__":
     sys.exit(main())

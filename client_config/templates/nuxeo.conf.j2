@@ -24,11 +24,10 @@ nuxeo.db.port=5432
 #nuxeo.db.active-timeout-minutes=30
 
 ##-----------------------------------------------------------------------------
-## redis
+## kafka
 ##-----------------------------------------------------------------------------
-nuxeo.redis.enabled=true
-nuxeo.redis.host={{ nuxeo_redis_host }}
-nuxeo.redis.prefix=nuxeo2021:
+kafka.enabled=true
+kafka.bootstrap.servers={{ kafka_bootstrap_servers }}
 
 ##-----------------------------------------------------------------------------
 ## elasticsearch

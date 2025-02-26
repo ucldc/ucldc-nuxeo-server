@@ -37,7 +37,7 @@ def main():
         nuxeo_url = os.environ["NUXEO_URL"],
         nuxeo_db_password = passwords[f'{parameter_prefix}/db_password'],
         nuxeo_db_host = os.environ["NUXEO_DB_HOST"],
-        nuxeo_redis_host = os.environ["NUXEO_REDIS_HOST"],
+        kafka_bootstrap_servers = os.environ["NUXEO_KAFKA_BOOTSTRAP_SERVERS"],
         elasticsearch_address = os.environ["NUXEO_ELASTICSEARCH_ENDPOINT"],
         nuxeo_s3storage_bucket = os.environ["NUXEO_S3_BUCKET"],
         nuxeo_s3storage_region = os.environ["NUXEO_S3_REGION"],

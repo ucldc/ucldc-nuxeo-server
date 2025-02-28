@@ -67,7 +67,7 @@ def main():
     with open('/etc/nuxeo/conf.d/ucldc.conf', 'w') as f:
         f.write(content)
 
-    print(f"Wrote /etc/nuxeo/conf.d/ucldc.conf for {env}")
+    print(f"Wrote /etc/nuxeo/conf.d/ucldc.conf for {os.environ['NUXEO_ENV']}")
 
 if __name__ == "__main__":
     sys.exit(main())

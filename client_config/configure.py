@@ -1,10 +1,11 @@
 import sys, os
+import json
 
 import boto3
+from botocore.exceptions import ClientError
 from jinja2 import Environment, FileSystemLoader
 
-def get_passwords_from_parameter_store(prefix):
-    session = boto3.Session(region_name="us-west-2")
+def get_passwords_from_parameter_store(prefix, session):
     ssm = session.client("ssm")
 
     response = ssm.get_parameters(
@@ -21,6 +22,21 @@ def get_passwords_from_parameter_store(prefix):
     
     return param_dict
 
+def get_secret(secret_name, session):
+
+    client = session.client(
+        service_name='secretsmanager'
+    )
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        raise e
+
+    return get_secret_value_response['SecretString']
+
 def main():
     '''
     Create nuxeo.conf file for environment (prod or stg)
@@ -29,20 +45,23 @@ def main():
     environment = Environment(loader=FileSystemLoader(template_dir))
     template = environment.get_template("nuxeo.conf.j2")
 
-    env = os.environ['NUXEO_ENV']
-    parameter_prefix = f"/nuxeo/{env}"
-    passwords = get_passwords_from_parameter_store(parameter_prefix)
+    boto_session = boto3.Session(region_name="us-west-2")
+    parameter_prefix = f"/nuxeo/{os.environ['NUXEO_ENV']}"
+    parameter_store_passwords = get_passwords_from_parameter_store(parameter_prefix, boto_session)
+    msk_sasl_credentials = json.loads(get_secret("AmazonMSK_nuxeo", boto_session))
 
     content = template.render(
         nuxeo_url = os.environ["NUXEO_URL"],
-        nuxeo_db_password = passwords[f'{parameter_prefix}/db_password'],
+        nuxeo_db_password = parameter_store_passwords[f'{parameter_prefix}/db_password'],
         nuxeo_db_host = os.environ["NUXEO_DB_HOST"],
         kafka_bootstrap_servers = os.environ["NUXEO_KAFKA_BOOTSTRAP_SERVERS"],
+        msk_sasl_username = msk_sasl_credentials['username'],
+        msk_sasl_password = msk_sasl_credentials['password'],
         elasticsearch_address = os.environ["NUXEO_ELASTICSEARCH_ENDPOINT"],
         nuxeo_s3storage_bucket = os.environ["NUXEO_S3_BUCKET"],
         nuxeo_s3storage_region = os.environ["NUXEO_S3_REGION"],
-        mail_transport_user = os.environ["MAIL_TRANSPORT_USER"],
-        mail_transport_password = passwords[f'{parameter_prefix}/mail_transport_password']
+        mail_transport_user = os.environ["NUXEO_MAIL_TRANSPORT_USER"],
+        mail_transport_password = parameter_store_passwords[f'{parameter_prefix}/mail_transport_password']
     )
 
     with open('/etc/nuxeo/conf.d/ucldc.conf', 'w') as f:

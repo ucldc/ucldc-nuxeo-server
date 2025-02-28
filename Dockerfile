@@ -55,5 +55,8 @@ RUN pip install -r requirements.txt
 WORKDIR /
 COPY --chown=900:0 --chmod=744 ./ucldc-docker-entrypoint.sh /ucldc-docker-entrypoint.sh
 
+# create java truststore for SASL authentication to MSK cluster
+RUN cp /usr/lib/jvm/jre/lib/security/cacerts /kafka.client.truststore.jks
+
 ENTRYPOINT ["/ucldc-docker-entrypoint.sh"]
 CMD ["nuxeoctl", "console"]

@@ -28,6 +28,14 @@ nuxeo.db.port=5432
 ##-----------------------------------------------------------------------------
 kafka.enabled=true
 kafka.bootstrap.servers={{ kafka_bootstrap_servers }}
+kafka.ssl=true
+kafka.sasl.enabled=true
+kafka.sasl.mechanism=SCRAM-SHA-512
+kafka.security.protocol=SASL_SSL
+kafka.sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="{{ msk_sasl_username }}" password="{{ msk_sasl_password }}";
+kafka.truststore.path=/kafka.client.truststore.jks
+# `changeit` is the default password for java truststores; kafka.client.truststore.jks this is just a copy of /usr/lib/jvm/jre/lib/security/cacerts, so we're OK keeping the default insecure password
+kafka.truststore.password=changeit
 
 ##-----------------------------------------------------------------------------
 ## elasticsearch

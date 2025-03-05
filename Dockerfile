@@ -31,13 +31,14 @@ RUN /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.
 
 # install system packages
 USER 0
-#RUN dnf -y --allowerasing update \
-RUN dnf -y update
-RUN dnf -y install epel-release \
+RUN dnf -y --allowerasing update \
+   && dnf -y install epel-release \
    && dnf -y config-manager --set-enabled ol9_codeready_builder \
    && dnf -y config-manager --set-enabled ol9_developer_EPEL \
    && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
 RUN dnf -y install ffmpeg \
+    GraphicsMagick \
+    #ufraw \
     libreoffice \
 RUN dnf -y install \
     python3 \

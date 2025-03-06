@@ -38,9 +38,7 @@ RUN dnf -y --allowerasing update \
    && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
 RUN dnf -y install ffmpeg \
     GraphicsMagick \
-    #ufraw \
     libreoffice \
-RUN dnf -y install \
     python3 \
     python3-pip \
     python3-setuptools \

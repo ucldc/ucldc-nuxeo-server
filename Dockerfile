@@ -58,6 +58,10 @@ RUN pip install -r requirements.txt
 WORKDIR /
 COPY --chown=900:0 --chmod=744 ./ucldc-docker-entrypoint.sh /ucldc-docker-entrypoint.sh
 
+# create alias for `identify` command that points to GraphicsMagick's `identify`
+# ImageMagick isn't available in Linux Oracle 9
+RUN echo 'alias identify="gm identify"' >> ~/.bashrc
+
 # create java truststore for SASL authentication to MSK cluster
 USER 0
 RUN cp /usr/lib/jvm/jre/lib/security/cacerts /kafka.client.truststore.jks

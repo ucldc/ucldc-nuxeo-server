@@ -36,8 +36,10 @@ RUN dnf -y --allowerasing update \
    && dnf -y config-manager --set-enabled ol9_codeready_builder \
    && dnf -y config-manager --set-enabled ol9_developer_EPEL \
    && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+# reinstall ImageMagick7, which was removed by dnf update
+RUN dnf -y --enablerepo=remi --exclude=python3-setuptools install ImageMagick7
 RUN dnf -y install ffmpeg \
-    GraphicsMagick \
+    #GraphicsMagick \
     libreoffice \
     python3 \
     python3-pip \
@@ -58,7 +60,7 @@ COPY --chown=900:0 --chmod=744 ./ucldc-docker-entrypoint.sh /ucldc-docker-entryp
 
 # create alias for `identify` command that points to GraphicsMagick's `identify`
 # ImageMagick isn't available in Linux Oracle 9
-RUN echo 'alias identify="gm identify"' >> ~/.bashrc
+#RUN echo 'alias identify="gm identify"' >> ~/.bashrc
 
 # create java truststore for SASL authentication to MSK cluster
 USER 0

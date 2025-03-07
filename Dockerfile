@@ -38,7 +38,7 @@ RUN dnf -y --allowerasing update \
    && dnf -y install epel-release \
    && dnf -y config-manager --set-enabled ol9_codeready_builder \
    && dnf -y config-manager --set-enabled ol9_developer_EPEL \ 
-   && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm \
+   && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
 
 RUN dnf -y install \
     ffmpeg \

@@ -36,7 +36,7 @@ RUN dnf -y --allowerasing update \
    && dnf -y config-manager --set-enabled ol9_codeready_builder \
    && dnf -y config-manager --set-enabled ol9_developer_EPEL \ 
    # reinstall ImageMagick7, which was removed by dnf update
-   && dnf -y --enablerepo=remi --exclude=python3-setuptools install ImageMagick7
+   && dnf -y --enablerepo=remi --exclude=python3-setuptools install ImageMagick7 \
    && dnf -y install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm \
     ffmpeg \
     libreoffice \

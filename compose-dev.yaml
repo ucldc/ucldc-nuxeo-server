@@ -4,7 +4,7 @@ services:
     pull_policy: never
     build:
       context: ./
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.nuxeo
       args:
         - NUXEO_VERSION=${NUXEO_VERSION}
         - NUXEO_CLID=${NUXEO_CLID}
@@ -13,5 +13,13 @@ services:
       tags:
         - ucldc/nuxeo
     env_file: .env.docker.dev
+    #command: ["tail", "-f", "/dev/null"]
+  nginx:
+    image: ucldc/nginx
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.nginx
+      tags:
+      - ucldc/nginx
     ports:
-      - "8080:8080"
+      - "80:80"

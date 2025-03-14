@@ -42,7 +42,6 @@ RUN dnf -y --allowerasing update \
 
 RUN dnf -y install \
     ffmpeg \
-    libreoffice \
     python3 \
     python3-pip \
     python3-setuptools \

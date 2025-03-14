@@ -33,7 +33,7 @@ RUN /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.
 USER 0
 RUN dnf -y --allowerasing update \
    # reinstall ImageMagick7, which was removed by dnf update
-   && dnf -y --enablerepo=remi --exclude=python3-setuptools install ImageMagick7 \
+   # && dnf -y --enablerepo=remi --exclude=python3-setuptools install ImageMagick7 \
    # install stuff needed for ffmpeg
    && dnf -y install epel-release \
    && dnf -y config-manager --set-enabled ol9_codeready_builder \

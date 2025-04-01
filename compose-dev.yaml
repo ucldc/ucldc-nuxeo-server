@@ -9,7 +9,7 @@ services:
         - NUXEO_VERSION=${NUXEO_VERSION}
         - NUXEO_CLID=${NUXEO_CLID}
         - NUXEO_CUSTOM_PACKAGE=${NUXEO_CUSTOM_PACKAGE}
-        - DEV=${DEV}
+        - DEV=true
       tags:
         - ucldc/nuxeo
     environment:

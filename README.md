@@ -1,8 +1,8 @@
 # ucldc-nuxeo-server
 
-This repo contains a Dockerfile for [building the custom UCLDC nuxeo server image](https://doc.nuxeo.com/nxdoc/build-a-custom-docker-image/). This image is built on top of the official Nuxeo docker image and includes the custom package that we built in Nuxeo Studio. The code in `client_config` is run when the application container is started up. This configures Nuxeo for a particular client, i.e. stage or prod.
+This repo contains a Dockerfile for [building the custom UCLDC nuxeo server image](https://doc.nuxeo.com/nxdoc/build-a-custom-docker-image/). This image is built on top of the official Nuxeo docker image and includes the custom package that we built in Nuxeo Studio. The code in `client_config/` is run when the application container is started up. This configures Nuxeo for a particular client, i.e. stage or prod.
 
-The repo also contains a Dockerfile for building an nginx image that is configured as a reverse proxy for Nuxeo.
+The repo also contains a Dockerfile for building an nginx image that is configured as a reverse proxy for Nuxeo. This is intended to be run as a "sidecar" container to the application container.
 
 There is an AWS CodeBuild project for building the Docker images and pushing them to ECR, defined as a CloudFormation template here: [https://github.com/cdlib/pad-infrastructure](https://github.com/cdlib/pad-infrastructure) [private repo]
 

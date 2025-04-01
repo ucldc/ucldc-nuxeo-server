@@ -36,4 +36,4 @@ docker compose -f compose-dev.yaml up
 
 Nuxeo should now be up at http://localhost
 
-Note that it is assumed that the AWS hosted RDS, OpenSearch and MSK instances are not accessible locally, since they are locked down in a VPC. Therefore, `NUXEO_SKIP_CONFIG` is set to `true` in `.env.docker.dev`, meaning that the nuxeo client configuration will be skipped. Nuxeo will use the default embedded datastores instead.
+Note that it is assumed that the AWS hosted RDS, OpenSearch and MSK instances are not accessible locally, since they are locked down in a VPC. Therefore, `NUXEO_SKIP_CONFIG` is set to `true` in `compose-dev.yaml`, meaning that the nuxeo client configuration will be skipped. Nuxeo will use the default embedded datastores instead.

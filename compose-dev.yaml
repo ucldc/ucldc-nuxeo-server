@@ -12,7 +12,8 @@ services:
         - DEV=${DEV}
       tags:
         - ucldc/nuxeo
-    env_file: .env.docker.dev
+    environment:
+      - NUXEO_SKIP_CONFIG=true
     #command: ["tail", "-f", "/dev/null"]
   nginx:
     image: ucldc/nginx

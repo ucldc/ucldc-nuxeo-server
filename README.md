@@ -10,7 +10,17 @@ There is an AWS CodeBuild project for building the Docker images and pushing the
 
 First copy `exportenv.template` to `exportenv.local`. Populate the env var values and source the file. These are referenced in `compose-dev.yaml` as build args.
 
-Then, paste your AWS credentials into the `.env.docker.dev` file. 
+Then, modify nginx.conf. Replace this line:
+
+```
+proxy_pass http://localhost:8080;
+```
+
+with this line:
+
+```
+proxy_pass http://nuxeo:8080;
+```
 
 Then, to build the images locally: 
 
@@ -18,11 +28,12 @@ Then, to build the images locally:
 docker compose -f compose-dev.yaml build
 ```
 
-And run the containers locally:
+And to run the containers locally:
 
 ```
 docker compose -f compose-dev.yaml up
 ```
 
-Note that it is assumed that the RDS, OpenSearch and MSK instances are not accessible locally, since they are locked down in a VPC. Therefore, `NUXEO_SKIP_CONFIG` is set to `true` in `.env.docker.dev`, meaning that the nuxeo client configuration will be skipped. Nuxeo will use the default embedded database, index, and key-value store.
+Nuxeo should now be up at http://localhost
 
+Note that it is assumed that the AWS hosted RDS, OpenSearch and MSK instances are not accessible locally, since they are locked down in a VPC. Therefore, `NUXEO_SKIP_CONFIG` is set to `true` in `.env.docker.dev`, meaning that the nuxeo client configuration will be skipped. Nuxeo will use the default embedded datastores instead.

@@ -7,6 +7,7 @@
 ##-----------------------------------------------------------------------------
 nuxeo.templates=postgresql,drive,s3binaries
 nuxeo.url={{ nuxeo_url }}
+nuxeo.preview.legacy.enabled=true
 
 ##-----------------------------------------------------------------------------
 ## database
@@ -24,16 +25,23 @@ nuxeo.db.port=5432
 #nuxeo.db.active-timeout-minutes=30
 
 ##-----------------------------------------------------------------------------
-## redis
+## kafka
 ##-----------------------------------------------------------------------------
-nuxeo.redis.enabled=true
-nuxeo.redis.host={{ nuxeo_redis_host }}
-nuxeo.redis.prefix=nuxeo2021:
+kafka.enabled=true
+kafka.bootstrap.servers={{ kafka_bootstrap_servers }}
+kafka.ssl=true
+kafka.sasl.enabled=true
+kafka.sasl.mechanism=SCRAM-SHA-512
+kafka.security.protocol=SASL_SSL
+kafka.sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="{{ msk_sasl_username }}" password="{{ msk_sasl_password }}";
+kafka.truststore.path=/kafka.client.truststore.jks
+# `changeit` is the default password for java truststores; kafka.client.truststore.jks this is just a copy of /usr/lib/jvm/jre/lib/security/cacerts, so we're OK keeping the default insecure password
+kafka.truststore.password=changeit
 
 ##-----------------------------------------------------------------------------
 ## elasticsearch
 ##-----------------------------------------------------------------------------
-elasticsearch.addressList={{ elasticsearch_address_list }}
+elasticsearch.addressList={{ elasticsearch_address }}
 elasticsearch.fetchDocFromEs=false
 elasticsearch.override.pageproviders=default_search,default_document_suggestion,DEFAULT_DOCUMENT_SUGGESTION,advanced_document_content,domain_documents,expired_search,default_trash_search,REST_API_SEARCH_ADAPTER,all_collections,simple_search,document_content,section_content,document_trash_content,orderable_document_content,document_picker,user_documents,user_workspaces,user_sections,customAdvancedSearch
 

@@ -1,0 +1,26 @@
+services:
+  nuxeo:
+    image: ucldc/nuxeo
+    pull_policy: never
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.nuxeo
+      args:
+        - NUXEO_VERSION=${NUXEO_VERSION}
+        - NUXEO_CLID=${NUXEO_CLID}
+        - NUXEO_CUSTOM_PACKAGE=${NUXEO_CUSTOM_PACKAGE}
+        - DEV=true
+      tags:
+        - ucldc/nuxeo
+    environment:
+      - NUXEO_SKIP_CONFIG=true
+    #command: ["tail", "-f", "/dev/null"]
+  nginx:
+    image: ucldc/nginx
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.nginx
+      tags:
+      - ucldc/nginx
+    ports:
+      - "80:80"

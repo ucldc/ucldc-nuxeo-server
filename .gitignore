@@ -1,9 +1,9 @@
 *.zip
 exportenv.local
-*.conf
 instance.clid
 nuxeo-conf/
 tmp/
 __pycache__/
 env/
 .clid
+.venv

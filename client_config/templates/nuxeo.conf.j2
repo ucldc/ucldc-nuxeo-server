@@ -18,11 +18,11 @@ nuxeo.db.password={{ nuxeo_db_password }}
 nuxeo.db.host={{ nuxeo_db_host }}
 nuxeo.db.port=5432
 #nuxeo.db.validationQuery=SELECT 1
-#nuxeo.vcs.idle-timeout-minutes=600
-#nuxeo.vcs.active-timeout-minutes=300
-#nuxeo.db.transactiontimeout=3000
-#nuxeo.db.idle-timeout-minutes=30
-#nuxeo.db.active-timeout-minutes=30
+nuxeo.vcs.idle-timeout-minutes=600
+nuxeo.vcs.active-timeout-minutes=300
+nuxeo.db.transactiontimeout=3000
+nuxeo.db.idle-timeout-minutes=30
+nuxeo.db.active-timeout-minutes=30
 
 ##-----------------------------------------------------------------------------
 ## kafka
@@ -96,4 +96,8 @@ nuxeo.data.dir=/var/lib/nuxeo
 ##-----------------------------------------------------------------------------
 nuxeo.cluster.enabled=true
 
-
+##-----------------------------------------------------------------------------
+## File upload timeout
+##-----------------------------------------------------------------------------
+# Configure the Tomcat connectionUploadTimeout to specify the timeout, in milliseconds, to use while a data upload is in progress.
+nuxeo.server.http.connectionUploadTimeout=600000

@@ -22,5 +22,8 @@ services:
       dockerfile: ./Dockerfile.nginx
       tags:
       - ucldc/nginx
+      args:
+      - NGINX_VERSION=${NUXEO_NGINX_VERSION}
     ports:
       - "80:80"
+

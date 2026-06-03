@@ -50,6 +50,10 @@ RUN dnf -y install \
 # create java truststore for SASL authentication to MSK cluster
 RUN cp /usr/lib/jvm/jre/lib/security/cacerts /kafka.client.truststore.jks
 
+# put modified ImageMagick policy in place
+WORKDIR /etc/ImageMagick-7
+COPY --chmod=644 ./imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
+
 # switch back to nuxeo user
 USER 900
 

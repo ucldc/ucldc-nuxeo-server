@@ -10,6 +10,8 @@ nuxeo.url={{ nuxeo_url }}
 nuxeo.preview.legacy.enabled=true
 nuxeo.server.http.maxPartCount=-1
 
+JAVA_OPTS=$JAVA_OPTS --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED
+
 ##-----------------------------------------------------------------------------
 ## database
 ##-----------------------------------------------------------------------------

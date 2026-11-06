@@ -22,12 +22,10 @@ fi
 
 # install remaining nuxeo packages
 RUN /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
-    nuxeo-jsf-ui \
     nuxeo-web-ui \
     nuxeo-drive \
-    nuxeo-quota \
-    nuxeo-quota-jsf-ui \
-    nuxeo-virtualnavigation
+    opensearch1-search-client \
+    opensearch1-audit
 
 # do stuff as root
 USER 0

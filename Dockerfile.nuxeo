@@ -24,8 +24,7 @@ fi
 RUN /install-packages.sh --clid $NUXEO_CLID --connect-url https://connect.nuxeo.com/nuxeo/site/ \
     nuxeo-web-ui \
     nuxeo-drive \
-    opensearch1-search-client \
-    opensearch1-audit
+    nuxeo-search-client-opensearch1
 
 # do stuff as root
 USER 0

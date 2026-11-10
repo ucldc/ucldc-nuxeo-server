@@ -5,7 +5,7 @@
 ##-----------------------------------------------------------------------------
 ## General parameters
 ##-----------------------------------------------------------------------------
-nuxeo.templates=postgresql,drive,s3binaries,jsf
+nuxeo.templates=postgresql,drive,s3binaries
 nuxeo.url={{ nuxeo_url }}
 nuxeo.preview.legacy.enabled=true
 nuxeo.server.http.maxPartCount=-1
@@ -44,7 +44,7 @@ kafka.truststore.password=changeit
 ##-----------------------------------------------------------------------------
 ## elasticsearch
 ##-----------------------------------------------------------------------------
-elasticsearch.addressList={{ elasticsearch_address }}
+nuxeo.opensearch1.client.server={{ elasticsearch_address }}
 elasticsearch.fetchDocFromEs=false
 elasticsearch.override.pageproviders=default_search,default_document_suggestion,DEFAULT_DOCUMENT_SUGGESTION,advanced_document_content,domain_documents,expired_search,default_trash_search,REST_API_SEARCH_ADAPTER,all_collections,simple_search,document_content,section_content,document_trash_content,orderable_document_content,document_picker,user_documents,user_workspaces,user_sections,customAdvancedSearch
 
@@ -97,7 +97,7 @@ nuxeo.data.dir=/var/lib/nuxeo
 ## will append "nuxeo.cluster.nodeid=xxx" to the end of the nuxeo.conf 
 ## file on each nuxeo-server node
 ##-----------------------------------------------------------------------------
-nuxeo.cluster.enabled=true
+nuxeo.cluster.enabled=false
 
 ##-----------------------------------------------------------------------------
 ## File upload timeout
